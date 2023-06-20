@@ -2,4 +2,6 @@
 
 Testes nos scripts (.R)
 
-Apendice.pdf para apêndices
+Apêndices disponíveis em Apendice.pdf
+
+Questionário completo em QUESTIONÁRIO.pdf
