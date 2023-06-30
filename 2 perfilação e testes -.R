@@ -585,3 +585,62 @@ plot_cap(ModeloImodificado, condition =c("interesse_fac","Mulher"), conf_level =
 predictions(ModeloBfull, newdata = datagrid(PosturaAntiDemoc = seq(0,1,.25),
                                             Mulher = T))
 plot_cap(ModeloBfull, condition =c("PosturaAntiDemoc","Mulher"), conf_level = .9)
+
+
+#
+str(df)
+prop.table(table(df$Mulher))*100
+str(df$Idade)
+mean(df$Idade)
+str(df$Renda)
+prop.table(table(df$Renda))*100
+17.4+25.5+36.7+13.2+5.3+1.9
+prop.table(table(df$Nenhum))*100
+prop.table(table(df$evangelico))*100
+prop.table(table(df$catolico))*100
+100-(15.06+17.46+50.33)
+prop.table(table(df$Branca))*100
+prop.table(table(df$interesse))
+28.2+25.5+29.5+16.7
+summary(df$PosturaAntiDemoc)
+
+#
+rm(list=ls())
+library(tidyverse)
+df <- read_csv("df.csv")
+table(df$P56)
+df$P56_recod_numeric_apoio_positivo <- df$P56
+df$P56_recod_numeric_apoio_positivo[df$P56 == 4 | df$P56 == 5] <- NA
+df$P56_recod_numeric_apoio_positivo[df$P56 == 1 | df$P56 == 2] <- 1
+df$P56_recod_numeric_apoio_positivo[df$P56 == 3] <- 0
+table(df$P56_recod_numeric_apoio_positivo)
+#'f =~ P51_recod_numeric + P52_recod_numeric +
+#' P53_recod_numeric + P54_recod_numeric + 
+#' P55_recod_numeric + P56_recod_numeric_apoio_positivo +
+#'  P58_recod_numeric'
+
+df<-subset(df,select=c(P51,P52,P53,P54,P55,P56_recod_numeric_apoio_positivo,P58))
+str(df)
+summary(df)
+df <- df %>%
+  mutate_all(~ ifelse(. > 10, NA, .))
+
+df <- df %>%
+  mutate_all(as.factor)
+summary(df)
+
+prop.table(table(df$P56_recod_numeric_apoio_positivo))
+df <- subset(df, select=-c(P56_recod_numeric_apoio_positivo))
+# Função para calcular as porcentagens de cada categoria em relação ao total
+calculate_percentages <- function(column) {
+  category_counts <- table(column)
+  category_percentages <- prop.table(category_counts) * 100
+  category_percentages
+}
+
+# Calcular as porcentagens para cada coluna do dataframe
+percent_table <- sapply(df, calculate_percentages)
+
+# Converter os resultados em um dataframe
+percent_df <- as.data.frame(percent_table)
+percent_df
